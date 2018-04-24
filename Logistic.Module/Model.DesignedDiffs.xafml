@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application Title="Logistic" Logo="BO_Appearance">
+  <ActionDesign>
+    <Actions>
+      <Action Id="ShowSingleton" Caption="O firmie" ConfirmationMessage="" ImageName="BO_Dashboard" ToolTip="Pokaż aktualne informacje o firmie" />
+    </Actions>
+  </ActionDesign>
+  <BOModel>
+    <Class Name="Logistic.Module.BusinessObjects.AboutCompanySingleton" ImageName="BO_Dashboard" />
+    <Class Name="Logistic.Module.BusinessObjects.Cargo" ImageName="Action_CloneMerge_Clone_Object" />
+    <Class Name="Logistic.Module.BusinessObjects.Driver" ImageName="BO_Employee" />
+    <Class Name="Logistic.Module.BusinessObjects.HistoryTask" ImageName="BO_Scheduler" />
+    <Class Name="Logistic.Module.BusinessObjects.Location" ImageName="Action_NavigationBar" />
+    <Class Name="Logistic.Module.BusinessObjects.Task" ImageName="BO_List" />
+    <Class Name="Logistic.Module.BusinessObjects.Vehicle" ImageName="BO_Vendor" />
+  </BOModel>
+  <NavigationItems>
+    <Items>
+      <Item Id="Default">
+        <Items>
+          <Item Id="AboutCompanySingleton_ListView" Removed="True" />
+        </Items>
+      </Item>
+    </Items>
+  </NavigationItems>
+  <Options>
+    <LayoutManagerOptions RequiredFieldMark="*" />
+  </Options>
+  <SchemaModules>
+    <SchemaModule Name="SystemModule" Version="17.1.4.0" IsNewNode="True" />
+  </SchemaModules>
+  <Views>
+    <ListView Id="Location_ListView">
+      <MapSettings Provider="Bing" />
+    </ListView>
+  </Views>
+</Application>
