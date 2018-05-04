@@ -1,24 +1,44 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Application Title="Logistic" Logo="BO_Appearance">
+<Application Title="Manager ligistyczny" Logo="BO_Position" AboutInfoString="Program do zarządznia firmą logistyczną" Company="Medspace" Copyright="Rafał Rojek" Description="Program pozwala na zarządzanie działaniem firmą logistyczną, przechowywaniem jej historii oraz kalkulowaniem finansów">
   <ActionDesign>
     <Actions>
+      <Action Id="CargoController" ImageName="Action_SimpleAction" />
       <Action Id="ShowSingleton" Caption="O firmie" ConfirmationMessage="" ImageName="BO_Dashboard" ToolTip="Pokaż aktualne informacje o firmie" />
+      <Action Id="TaskController" ImageName="Action_StateMachine" />
+      <Action Id="VechicleController" ImageName="Action_DeleteDashboard" />
     </Actions>
   </ActionDesign>
   <BOModel>
     <Class Name="Logistic.Module.BusinessObjects.AboutCompanySingleton" ImageName="BO_Dashboard" />
     <Class Name="Logistic.Module.BusinessObjects.Cargo" ImageName="Action_CloneMerge_Clone_Object" />
     <Class Name="Logistic.Module.BusinessObjects.Driver" ImageName="BO_Employee" />
-    <Class Name="Logistic.Module.BusinessObjects.HistoryTask" ImageName="BO_Scheduler" />
     <Class Name="Logistic.Module.BusinessObjects.Location" ImageName="Action_NavigationBar" />
     <Class Name="Logistic.Module.BusinessObjects.Task" ImageName="BO_List" />
     <Class Name="Logistic.Module.BusinessObjects.Vehicle" ImageName="BO_Vendor" />
   </BOModel>
   <NavigationItems>
     <Items>
-      <Item Id="Default">
+      <Item Id="Current" ImageName="BO_Lead" Caption="Dziś" IsNewNode="True">
+        <Items IsNewNode="True">
+          <Item Id="Cargo_ListView" ViewId="Cargo_ListView" ObjectKey="" IsNewNode="True" />
+          <Item Id="Task_ListView" ViewId="Task_ListView" ObjectKey="" IsNewNode="True" />
+          <Item Id="Vehicle_ListView" ViewId="Vehicle_ListView" ObjectKey="" IsNewNode="True" />
+        </Items>
+      </Item>
+      <Item Id="Default" Caption="Inne">
         <Items>
           <Item Id="AboutCompanySingleton_ListView" Removed="True" />
+          <Item Id="Cargo_ListView" Removed="True" />
+          <Item Id="Driver_ListView" ViewId="Driver_ListView" ObjectKey="" IsNewNode="True" Removed="True" />
+          <Item Id="Task_ListView" Removed="True" />
+          <Item Id="Vehicle_ListView" Removed="True" />
+        </Items>
+      </Item>
+      <Item Id="History" ImageName="Action_Debug_Step" Caption="Historia" IsNewNode="True">
+        <Items IsNewNode="True">
+          <Item Id="Cargo" ViewId="HistoryCargo_ListView" IsNewNode="True" />
+          <Item Id="HistoryTask_ListView" ViewId="HistoryTask_ListView" IsNewNode="True" />
+          <Item Id="Vechicle" ViewId="HistoryVehicle_ListView" IsNewNode="True" />
         </Items>
       </Item>
     </Items>
@@ -30,8 +50,200 @@
     <SchemaModule Name="SystemModule" Version="17.1.4.0" IsNewNode="True" />
   </SchemaModules>
   <Views>
-    <ListView Id="Location_ListView">
-      <MapSettings Provider="Bing" />
+    <DetailView Id="Cargo_DetailView">
+      <Layout>
+        <LayoutGroup Id="Main" RelativeSize="100">
+          <LayoutGroup Id="SimpleEditors" RelativeSize="100">
+            <LayoutGroup Id="Cargo" RelativeSize="100">
+              <LayoutGroup Id="Cargo_col1" RelativeSize="99.718309859154928">
+                <LayoutItem Id="Type" RelativeSize="5.62390158172232" Index="0" />
+                <LayoutItem Id="Restrictions" ViewItem="Restrictions" Index="1" RelativeSize="4.21792618629174" IsNewNode="True" />
+                <LayoutItem Id="Weight" Index="2" RelativeSize="4.21792618629174" />
+                <LayoutItem Id="Task" ViewItem="Task" Index="3" RelativeSize="4.21792618629174" IsNewNode="True" />
+                <LayoutItem Id="Vehicle" ViewItem="Vehicle" Index="4" RelativeSize="81.722319859402461" IsNewNode="True" />
+                <LayoutItem Id="IsCompleted" RelativeSize="5.62390158172232" Removed="True" />
+              </LayoutGroup>
+              <LayoutGroup Id="Cargo_col2" RelativeSize="0.28169014084507044" Caption="Cargo_col2" Direction="Horizontal">
+                <LayoutItem Id="Task" Index="0" RelativeSize="5.62390158172232" Removed="True" />
+                <LayoutItem Id="Vehicle" Index="0" RelativeSize="100" Removed="True" />
+                <LayoutItem Id="Restrictions" Removed="True" />
+              </LayoutGroup>
+            </LayoutGroup>
+          </LayoutGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+    <ListView Id="Cargo_ListView" Criteria="[IsCompleted] = False">
+      <Columns>
+        <ColumnInfo Id="IsCompleted" Removed="True" />
+      </Columns>
+    </ListView>
+    <DetailView Id="Driver_DetailView">
+      <Layout>
+        <LayoutGroup Id="Main" RelativeSize="100">
+          <LayoutGroup Id="SimpleEditors" RelativeSize="100">
+            <LayoutGroup Id="Driver" RelativeSize="100">
+              <LayoutGroup Id="Driver_col1" RelativeSize="99.858356940509921">
+                <LayoutItem Id="FirstName" RelativeSize="5.62390158172232" />
+                <LayoutItem Id="LastName" RelativeSize="4.21792618629174" />
+                <LayoutItem Id="PhoneNumber" ViewItem="PhoneNumber" Index="2" RelativeSize="4.21792618629174" IsNewNode="True" />
+                <LayoutItem Id="Vehicle" ViewItem="Vehicle" Index="3" RelativeSize="4.21792618629174" IsNewNode="True" />
+                <LayoutItem Id="Pesel" Index="4" RelativeSize="81.722319859402461" />
+              </LayoutGroup>
+              <LayoutGroup Id="Driver_col2" Caption="Driver_col2" RelativeSize="0.141643059490085" Direction="Horizontal">
+                <LayoutItem Id="Vehicle" Index="0" RelativeSize="100" Removed="True" />
+                <LayoutItem Id="PhoneNumber" Removed="True" />
+              </LayoutGroup>
+            </LayoutGroup>
+          </LayoutGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+    <ListView Id="HistoryCargo_ListView" ClassName="Logistic.Module.BusinessObjects.Cargo" Criteria="[IsCompleted] = True" Caption="History Cargo" AllowDelete="False" AllowNew="False" IsNewNode="True">
+      <Columns IsNewNode="True">
+        <ColumnInfo Id="Oid" PropertyName="Oid" Width="70" Index="-1" IsNewNode="True" />
+        <ColumnInfo Id="Type" PropertyName="Type" Width="70" Index="1" IsNewNode="True" />
+        <ColumnInfo Id="Weight" PropertyName="Weight" Width="50" Index="2" IsNewNode="True" />
+        <ColumnInfo Id="Restrictions" PropertyName="Restrictions" Width="70" Index="3" IsNewNode="True" />
+        <ColumnInfo Id="Task" PropertyName="Task" Width="70" Index="4" IsNewNode="True" />
+        <ColumnInfo Id="Vehicle" PropertyName="Vehicle" Width="70" Index="5" IsNewNode="True" />
+      </Columns>
+    </ListView>
+    <ListView Id="HistoryTask_ListView" ClassName="Logistic.Module.BusinessObjects.Task" Criteria="[IsCompleted] = True" Caption="History Task" AllowDelete="False" AllowNew="False" AllowEdit="False" ImageName="BO_List" IsNewNode="True">
+      <Columns IsNewNode="True">
+        <ColumnInfo Id="Name" PropertyName="Name" Width="400" SortIndex="0" SortOrder="Ascending" Index="0" IsNewNode="True" />
+        <ColumnInfo Id="Salary" PropertyName="Salary" Width="50" Index="2" IsNewNode="True" />
+        <ColumnInfo Id="Start" PropertyName="Start" Width="70" Index="3" IsNewNode="True" />
+        <ColumnInfo Id="End" PropertyName="End" Width="70" Index="4" IsNewNode="True" />
+      </Columns>
+    </ListView>
+    <ListView Id="HistoryVehicle_ListView" ClassName="Logistic.Module.BusinessObjects.Vehicle" Criteria="[IsSold] = True" Caption="History Vehicle" AllowDelete="False" AllowLink="False" AllowNew="False" IsNewNode="True">
+      <Columns IsNewNode="True">
+        <ColumnInfo Id="Oid" PropertyName="Oid" Width="70" Index="-1" IsNewNode="True" />
+        <ColumnInfo Id="Name" PropertyName="Name" Width="400" SortIndex="0" SortOrder="Ascending" Index="0" IsNewNode="True" />
+        <ColumnInfo Id="DistancePerDay" PropertyName="DistancePerDay" Width="50" Index="1" IsNewNode="True" />
+        <ColumnInfo Id="Capacity" PropertyName="Capacity" Width="50" Index="2" IsNewNode="True" />
+        <ColumnInfo Id="CostPerDay" PropertyName="CostPerDay" Width="50" Index="3" IsNewNode="True" />
+        <ColumnInfo Id="CostPerKm" PropertyName="CostPerKm" Width="50" Index="4" IsNewNode="True" />
+      </Columns>
+    </ListView>
+    <DetailView Id="Location_DetailView">
+      <Items>
+        <PropertyEditor Id="EndTasks" PropertyName="EndTasks" View="Location_EndTasks_ListView" IsNewNode="True" Removed="True" />
+        <PropertyEditor Id="Oid" PropertyName="Oid" IsNewNode="True" Removed="True" />
+        <PropertyEditor Id="StartTaks" PropertyName="StartTaks" View="Location_StartTaks_ListView" IsNewNode="True" Removed="True" />
+      </Items>
+      <Layout>
+        <LayoutGroup Id="Main" RelativeSize="100">
+          <LayoutGroup Id="SimpleEditors" RelativeSize="100">
+            <LayoutGroup Id="Location" RelativeSize="100">
+              <LayoutItem Id="Name" RelativeSize="5.2373158756137483" ViewItem="Name" />
+              <LayoutItem Id="Xlocation" RelativeSize="3.927986906710311" ViewItem="Xlocation" />
+              <LayoutItem Id="Ylocation" RelativeSize="90.834697217675938" ViewItem="Ylocation" />
+            </LayoutGroup>
+          </LayoutGroup>
+          <TabbedGroup Id="Tabs" Removed="True">
+            <LayoutGroup Id="EndTasks">
+              <LayoutItem Id="EndTasks" ViewItem="EndTasks" />
+            </LayoutGroup>
+            <LayoutGroup Id="StartTaks">
+              <LayoutItem Id="StartTaks" ViewItem="StartTaks" />
+            </LayoutGroup>
+          </TabbedGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+    <DetailView Id="Task_DetailView">
+      <Items>
+        <PropertyEditor Id="AddToCalculation" Removed="True" />
+        <PropertyEditor Id="IsCompleted" Removed="True" />
+        <PropertyEditor Id="Oid" Removed="True" />
+      </Items>
+      <Layout>
+        <LayoutGroup Id="Main" RelativeSize="100">
+          <LayoutGroup Id="SimpleEditors" RelativeSize="17.348608837970541">
+            <LayoutGroup Id="Task" RelativeSize="100">
+              <LayoutGroup Id="Task_col1" RelativeSize="50">
+                <LayoutItem Id="Name" Index="0" RelativeSize="48.484848484848484" />
+                <LayoutItem Id="Salary" RelativeSize="51.515151515151516" Index="1" />
+                <LayoutItem Id="IsCompleted" Index="2" RelativeSize="78.94736842105263" Removed="True" />
+              </LayoutGroup>
+              <LayoutGroup Id="Task_col2" RelativeSize="50">
+                <LayoutItem Id="Start" RelativeSize="48.484848484848484" />
+                <LayoutItem Id="End" RelativeSize="36.363636363636367" />
+                <LayoutItem Id="AddToCalculation" RelativeSize="15.151515151515152" />
+              </LayoutGroup>
+            </LayoutGroup>
+          </LayoutGroup>
+          <LayoutGroup Id="Cargos_Group" Direction="Vertical" RelativeSize="82.651391162029455">
+            <LayoutItem Id="Cargos" RelativeSize="100" />
+          </LayoutGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+    <ListView Id="Task_ListView" Criteria="[IsCompleted] = False" AllowEdit="True">
+      <Columns>
+        <ColumnInfo Id="IsCompleted" Removed="True" />
+      </Columns>
+    </ListView>
+    <ListView Id="Vehicle_Cargos_ListView">
+      <Columns>
+        <ColumnInfo Id="IsCompleted" Index="-1" />
+        <ColumnInfo Id="Vehicle" Index="-1" />
+        <ColumnInfo Id="Type" Index="0" Width="85" />
+        <ColumnInfo Id="Weight" Width="134" Index="1" />
+        <ColumnInfo Id="Restrictions" Index="2" Width="172" />
+        <ColumnInfo Id="Task" Index="3" Width="157" />
+      </Columns>
+    </ListView>
+    <DetailView Id="Vehicle_DetailView">
+      <Items>
+        <PropertyEditor Id="AddToCalculate" Removed="True" />
+        <PropertyEditor Id="IsSold" Removed="True" />
+        <PropertyEditor Id="Oid" Removed="True" />
+      </Items>
+      <Layout>
+        <LayoutGroup Id="Main" RelativeSize="100">
+          <LayoutGroup Id="SimpleEditors" RelativeSize="20.949263502454993">
+            <LayoutGroup Id="Vehicle" RelativeSize="100">
+              <LayoutGroup Id="Vehicle_col1" RelativeSize="50">
+                <LayoutItem Id="Name" RelativeSize="36.363636363636367" />
+                <LayoutItem Id="DistancePerDay" RelativeSize="27.272727272727273" />
+                <LayoutItem Id="Capacity" RelativeSize="36.363636363636367" />
+                <LayoutItem Id="CostPerDay" Removed="True" />
+              </LayoutGroup>
+              <LayoutGroup Id="Vehicle_col2" RelativeSize="50">
+                <LayoutItem Id="CostPerKm" RelativeSize="36.363636363636367" />
+                <LayoutItem Id="CostPerDay" ViewItem="CostPerDay" Index="1" RelativeSize="27.272727272727273" IsNewNode="True" />
+                <LayoutItem Id="AddToCalculate" Index="2" RelativeSize="18.181818181818183" />
+                <LayoutItem Id="IsSold" Index="3" RelativeSize="18.181818181818183" />
+              </LayoutGroup>
+            </LayoutGroup>
+          </LayoutGroup>
+          <TabbedGroup Id="Tabs" RelativeSize="79.050736497545">
+            <LayoutGroup Id="Drivers" RelativeSize="100">
+              <LayoutItem Id="Drivers" RelativeSize="100" />
+            </LayoutGroup>
+            <LayoutGroup Id="Cargos" RelativeSize="100">
+              <LayoutItem Id="Cargos" RelativeSize="100" />
+            </LayoutGroup>
+          </TabbedGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+    <ListView Id="Vehicle_Drivers_ListView">
+      <Columns>
+        <ColumnInfo Id="Pesel" Width="159" Index="-1" />
+        <ColumnInfo Id="Vehicle" Index="-1" />
+        <ColumnInfo Id="FirstName" SortIndex="-1" SortOrder="None" Width="172" />
+        <ColumnInfo Id="LastName" SortIndex="0" SortOrder="Ascending" Width="173" />
+        <ColumnInfo Id="PhoneNumber" Width="211" Index="2" />
+      </Columns>
+    </ListView>
+    <ListView Id="Vehicle_ListView" Criteria="[IsSold] = False" AllowEdit="True">
+      <Columns>
+        <ColumnInfo Id="IsSold" Removed="True" />
+      </Columns>
     </ListView>
   </Views>
 </Application>

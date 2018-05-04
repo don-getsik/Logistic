@@ -27,8 +27,10 @@ namespace Logistic.Module.BusinessObjects
         [dc.XafDisplayName("Nazwa Firmy")]
         public string Name { get => name; set => SetPropertyValue(nameof(Name), ref name, value); }
 
+        [dc.XafDisplayName("Współżędna X")]
         public double Xlocation { get => xlocation; set => SetPropertyValue(nameof(Xlocation), ref xlocation, value); }
 
+        [dc.XafDisplayName("Wspóżędna Y")]
         public double Ylocation { get => ylocation; set => SetPropertyValue(nameof(Ylocation), ref ylocation, value); }
     }
 }

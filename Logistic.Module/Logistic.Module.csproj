@@ -118,16 +118,27 @@
     <Compile Include="BusinessObjects\AboutCompanySingleton.cs" />
     <Compile Include="BusinessObjects\Cargo.cs" />
     <Compile Include="BusinessObjects\Driver.cs" />
-    <Compile Include="BusinessObjects\HistoryTask.cs" />
     <Compile Include="BusinessObjects\Location.cs" />
     <Compile Include="BusinessObjects\LogisticDbContext.cs" />
     <Compile Include="BusinessObjects\Task.cs" />
-    <Compile Include="BusinessObjects\Vechicle.cs" />
+    <Compile Include="BusinessObjects\Vehicle.cs" />
+    <Compile Include="Controllers\ConnectTaks.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controllers\ConnectTaks.Designer.cs">
+      <DependentUpon>ConnectTaks.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\DoConnectedTasks.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controllers\DoConnectedTasks.Designer.cs">
       <DependentUpon>DoConnectedTasks.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\SellCar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controllers\SellCar.Designer.cs">
+      <DependentUpon>SellCar.cs</DependentUpon>
     </Compile>
     <Compile Include="Controllers\SingletonController.cs">
       <SubType>Component</SubType>
