@@ -31,6 +31,7 @@ namespace Logistic.Module.BusinessObjects
         [Association("Task-Cargos")]
         [dc.XafDisplayName("Przesyłki"), ToolTip("Wszystkie przesyłki związane z tym zleceniem")]
         [Index(-1)]
+        [RuleRequiredField(DefaultContexts.Save)]
         public XPCollection<Cargo> Cargos => GetCollection<Cargo>(nameof(Cargos));
 
         [Association("EndLocation")]

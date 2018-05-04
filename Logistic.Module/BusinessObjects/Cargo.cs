@@ -36,7 +36,6 @@ namespace Logistic.Module.BusinessObjects
         [dc.XafDisplayName("Zadanie"), ToolTip("Zadanie do którego ładunek jest przypisany")]
         [Index(3)]
         [Association("Task-Cargos")]
-        [RuleRequiredField(DefaultContexts.Save)]
         public Task Task { get => task; set => SetPropertyValue(nameof(Task), ref task, value); }
 
         [dc.XafDisplayName("Typ"), ToolTip("Rodzaj przesyłki")]
